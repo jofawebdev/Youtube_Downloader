@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{% block meta_description %}YouTube video downloader for high-quality content preservation{% endblock %}">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:title" content="{% block og_title %}YT Downloader Pro{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}Download YouTube videos and audio in multiple formats{% endblock %}">
+        <meta property="og:image" content="{% static 'downloader/images/og-image.jpg' %}">
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="Jofawebdev">
+        <meta name="twitter:creator" content="@yourhandle">
+
+        <title>{% block title %}YT Downloader Pro{% endblock %}</title>
+
+        <!-- Core CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="{% static 'downloader/css/style.css' %}">
+        
+        {% block extra_css %}{% endblock %}
+
+        <!-- Favicons -->
+        <link rel="icon" href="{% static 'downloader/favicon/favicon.ico' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'downloader/favicon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'downloader/favicon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'downloader/favicon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'downloader/favicon/site.webmanifest' %}">
+    </head>
+
+    <body>
+        <!-- Skip Navigation -->
+        <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                    <i class="bi bi-youtube me-2 fs-4" aria-hidden="true"></i>
+                    <span class="fs-5">YT Downloader Pro</span>
+                </a>
+                
+                <button class="navbar-toggler" type="button" 
+                        data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" 
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#footer">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        {% block content %}{% endblock %}
+
+        <!-- Footer -->
+        <footer class="site-footer mt-5">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <a href="#" class="brand-logo">
+                            <i class="bi bi-youtube me-2"></i>YT Downloader
+                        </a>
+                        <p class="footer-description">Download high-quality videos from YouTube effortlessly.</p>
+                    </div>
+
+                    <div class="footer-links">
+                        <h5 class="footer-heading">Quick Links</h5>
+                        <ul class="footer-list">
+                            <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+                            <li><a href="{% url 'about' %}" class="footer-link">About Us</a></li>
+                            <li><a href="#" class="footer-link">FAQ</a></li>
+                            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                            <li><a href="#" class="footer-link">Terms of Service</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-formats">
+                        <h5 class="footer-heading">Formats</h5>
+                        <ul class="footer-list">
+                            <li><span class="format-tag mp4">MP4</span></li>
+                            <li><span class="format-tag webm">WebM</span></li>
+                            <li><span class="format-tag mp3">MP3</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-social">
+                        <h5 class="footer-heading">Connect</h5>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="bi bi-github"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-discord"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p class="copyright">&copy; 2025 YT Downloader. All rights reserved.</p>
+                    <div class="legal-links">
+                        <a href="#" class="legal-link">Privacy Policy</a>
+                        <span class="divider">|</span>
+                        <a href="#" class="legal-link">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Core JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
+        {% block extra_js %}{% endblock %}
+    </body>
+</html>

@@ -1,140 +1,57 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>YouTube Video Downloader</title>
-        
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        
-        <!-- Bootstrap 5 CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        
-        <!-- Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="{% static 'downloader/css/style.css' %}">
-    </head>
+{% extends "downloader/base.html" %}
 
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="#">
-                    <i class="bi bi-youtube me-2 fs-4"></i>
-                    <span class="fs-5">YT Downloader Pro</span>
-                </a>
+{% block content %}
+
+    <main class="main-container">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold mb-4">Download YouTube Videos</h1>
+            <p class="lead">Paste your YouTube link below to start downloading</p>
+        </div>
+
+        <form action="{% url 'download' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="urlInput" class="form-label fs-6 text-uppercase fw-bold">YouTube Video URL</label>
+                <input type="url" class="form-control form-control-lg shadow-none" 
+                    name="url" id="urlInput" 
+                    placeholder="https://youtube.com/watch?v=..." 
+                    required>
             </div>
-        </nav>
+            <button type="submit" class="btn btn-download w-100 py-3">
+                <i class="bi bi-cloud-arrow-down me-2"></i>Analyze & Download
+            </button>
+        </form>
 
-        <main class="main-container">
-            <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold mb-4">Download YouTube Videos</h1>
-                <p class="lead">Paste your YouTube link below to start downloading</p>
+        <div class="supported-formats mt-5">
+            <h3 class="h5 mb-3 fw-semibold">Supported Download Formats</h3>
+            <div class="d-flex flex-wrap gap-2">
+                {% if supports_merged_formats %}
+                    <span class="format-badge bg-primary">MP4 1080p</span>
+                    <span class="format-badge bg-success">MP4 720p</span>
+                    <span class="format-badge bg-info">MP3 320kbps</span>
+                    <span class="format-badge bg-warning">WebM</span>
+                {% else %}
+                    <span class="format-badge bg-primary">MP4 (Best Quality)</span>
+                    <span class="format-badge bg-secondary">3GP</span>
+                {% endif %}
             </div>
+        </div>
 
-            <form action="{% url 'download' %}" method="post">
-                {% csrf_token %}
-                <div class="mb-4">
-                    <label for="urlInput" class="form-label fs-6 text-uppercase fw-bold">YouTube Video URL</label>
-                    <input type="url" class="form-control form-control-lg shadow-none" 
-                        name="url" id="urlInput" 
-                        placeholder="https://youtube.com/watch?v=..." 
-                        required>
-                </div>
-                <button type="submit" class="btn btn-download w-100 py-3">
-                    <i class="bi bi-cloud-arrow-down me-2"></i>Analyze & Download
-                </button>
-            </form>
-
-            <div class="supported-formats mt-5">
-                <h3 class="h5 mb-3 fw-semibold">Supported Download Formats</h3>
-                <div class="d-flex flex-wrap gap-2">
-                    {% if supports_merged_formats %}
-                        <span class="format-badge bg-primary">MP4 1080p</span>
-                        <span class="format-badge bg-success">MP4 720p</span>
-                        <span class="format-badge bg-info">MP3 320kbps</span>
-                        <span class="format-badge bg-warning">WebM</span>
-                    {% else %}
-                        <span class="format-badge bg-primary">MP4 (Best Quality)</span>
-                        <span class="format-badge bg-secondary">3GP</span>
-                    {% endif %}
-                </div>
-            </div>
-
-            {% if messages %}
-                <div class="alerts-container mt-5">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" 
-                            role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% else %}bi-exclamation-triangle-fill{% endif %} me-3"></i>
-                                <div class="alert-message">{{ message }}</div>
-                            </div>
-                            <button type="button" class="btn-close" 
-                                    data-bs-dismiss="alert" aria-label="Close"></button>
+        {% if messages %}
+            <div class="alerts-container mt-5">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" 
+                        role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% else %}bi-exclamation-triangle-fill{% endif %} me-3"></i>
+                            <div class="alert-message">{{ message }}</div>
                         </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </main>
-
-
-        <!-- Footer -->
-        <footer class="site-footer mt-5">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-brand">
-                        <a href="#" class="brand-logo">
-                            <i class="bi bi-youtube me-2"></i>YT Downloader
-                        </a>
-                        <p class="footer-description">Download high-quality videos from YouTube effortlessly.</p>
+                        <button type="button" class="btn-close" 
+                                data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-
-                    <div class="footer-links">
-                        <h5 class="footer-heading">Quick Links</h5>
-                        <ul class="footer-list">
-                            <li><a href="#" class="footer-link">About Us</a></li>
-                            <li><a href="#" class="footer-link">FAQ</a></li>
-                            <li><a href="#" class="footer-link">Privacy Policy</a></li>
-                            <li><a href="#" class="footer-link">Terms of Service</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-formats">
-                        <h5 class="footer-heading">Formats</h5>
-                        <ul class="footer-list">
-                            <li><span class="format-tag mp4">MP4</span></li>
-                            <li><span class="format-tag webm">WebM</span></li>
-                            <li><span class="format-tag mp3">MP3</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-social">
-                        <h5 class="footer-heading">Connect</h5>
-                        <div class="social-links">
-                            <a href="#" class="social-link"><i class="bi bi-github"></i></a>
-                            <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
-                            <a href="#" class="social-link"><i class="bi bi-discord"></i></a>
-                            <a href="#" class="social-link"><i class="bi bi-envelope"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <p class="copyright">&copy; 2025 YT Downloader. All rights reserved.</p>
-                    <div class="legal-links">
-                        <a href="#" class="legal-link">Privacy Policy</a>
-                        <span class="divider">|</span>
-                        <a href="#" class="legal-link">Terms of Use</a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        </footer>
+        {% endif %}
+    </main>
 
-        <!-- Bootstrap JS Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-</html>
+{% endblock content %}

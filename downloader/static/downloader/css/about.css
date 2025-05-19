@@ -1,0 +1,45 @@
+/* About page specific styles */
+
+.feature-card {
+    transition: transform 0.2s ease-in-out;
+    border: none;
+    border-radius: 12px;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-member {
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: 12px;
+}
+
+.member-avatar {
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.tech-badge {
+    padding: 0.75rem 1.25rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+    background-color: #f8f9fa!important;
+    border-color: #0d6efd;
+    color: #0d6efd!important;
+}
+
+.hover-shadow {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 768px) {
+    .member-avatar {
+        width: 60px!important;
+        height: 60px!important;
+    }
+}

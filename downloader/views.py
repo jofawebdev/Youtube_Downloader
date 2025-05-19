@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from django.contrib import messages
 import yt_dlp as youtube_dl
-from typing import Union
+from django.views.decorators.http import require_http_methods
+from typing import Union, Any
 
 # Ensure download directory exists
 os.makedirs(settings.DOWNLOAD_DIR, exist_ok=True)
@@ -17,6 +18,7 @@ def home(request: HttpRequest) -> HttpResponse:
         'supports_merged_formats': has_ffmpeg,
     }
     return render(request, 'downloader/home.html', context)
+
 
 def download_video(request: HttpRequest) -> Union[HttpResponse, redirect]:
     """
@@ -88,6 +90,7 @@ def download_video(request: HttpRequest) -> Union[HttpResponse, redirect]:
     
     return redirect('home')
 
+
 def _check_ffmpeg_available() -> bool:
     """
     Verify ffmpeg installation and accessibility.
@@ -105,6 +108,7 @@ def _check_ffmpeg_available() -> bool:
         return 'ffmpeg version' in result.stdout
     except (subprocess.SubprocessError, FileNotFoundError):
         return False
+
 
 def _parse_youtube_dl_error(error: str) -> str:
     """Convert yt-dlp errors to user-friendly messages."""
@@ -125,6 +129,7 @@ def _parse_youtube_dl_error(error: str) -> str:
     
     return "Error downloading video - please check the URL"
 
+
 def _get_progress_hook(request: HttpRequest) -> callable:
     """Generate a progress hook function for tracking download progress."""
     def progress_hook(d: dict) -> None:
@@ -138,3 +143,29 @@ def _get_progress_hook(request: HttpRequest) -> callable:
             pass
             
     return progress_hook
+
+
+@require_http_methods(["GET"])
+def about_view(request: HttpRequest) -> HttpResponse:
+    """Render the about page with project information."""
+    context: dict[str, Any] = {
+        'page_title': 'About YouTube Downloader',
+        'features': [
+            'High-quality video downloads',
+            'MP3 audio conversion',
+            'Multiple format support',
+            'Cross-platform compatibility',
+            'User-friendly Interface'
+        ],
+        'team': [
+            {'name': 'Jojo Mbungi', 'role': 'Lead Developer', 'bio': 'Full-stack Developer with 5+ years of experience'},
+            {'name': 'Jane Smith', 'role': 'UI/UX Designer', 'bio': 'Digital designer specializing in user interfaces'},
+        ],
+        'technologies': [
+            {'name': 'Django', 'url': 'https://www.djangoproject.com/'},
+            {'name': 'yt-dlp', 'url': 'https://www.github.com/yt-dlp/yt-dlp'},
+            {'name': 'FFmpeg', 'url': 'https://ffmpeg.org/'},
+            {'name': 'Bootstrap', 'url': 'https://getbootstrap.com/'},
+        ]
+    }
+    return render(request, 'downloader/about.html', context)

@@ -1,0 +1,67 @@
+{% extends "downloader/base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'downloader/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main Container-->
+    <main class="about-container container py-5">
+        <section class="about-header text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">About YouTube Downloader</h1>
+            <p class="lead">Empowering users to download and convert YouTube content responsibly</p>
+        </section>
+
+        <section class="features-section mb-5">
+            <h2 class="h3 mb-4 fw-semibold">Key Features</h2>
+            <div class="row g-4">
+                {% for feature in features %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card card h-100 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-check-circle-fill text-primary fs-4 mb-3"></i>
+                                <h3 class="h5 card-title">{{ feature }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="team-section mb-5">
+            <h2 class="h3 mb-4 fw-semibold">Our Team</h2>
+            <div class="row g-4">
+                {% for member in team %}
+                    <div class="col-md-6">
+                        <article class="team-member card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center gap-4">
+                                    <img src="{% static 'downloader/images/67931d3d650fc8f0d0287401_66b0929089fba41bd4d245c7_how-to-hire-a-web-developer.jpeg' %}" alt="{{ member.name }}" class="member-avatar rounded-circle" width="80" height="80">
+                                    <div>
+                                        <h3 class="h5 card-title mb-1">{{ member.name }}</h3>
+                                        <p class="text-muted mb-2">{{ member.role }}</p>
+                                        <p class="card-text small">{{ member.bio }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="technologies-section">
+            <h2 class="h3 mb-4 fw-semibold">Technologies Used</h2>
+            <div class="d-flex flex-wrap gap-3">
+                {% for tech in technologies %}
+                    <a href="{{ tech.url }}"  target="_blank" rel="noopener noreferrer" class="tech-badge badge bg-light text-dark text-decoration-none hover-shadow">
+                        {{ tech.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock content %}
